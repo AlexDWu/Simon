@@ -61,6 +61,11 @@ inline void configSwitches()  {
 #define MAX_TEMPO 240
 #define TEMPO_INC 30
 
+#define BLUE 0;
+#define RED 1;
+#define YELLOW 2;
+#define GREEN 3;
+
 void test();
 
 //Generates a pattern of a given size and places it in the array
@@ -70,13 +75,20 @@ void generatePattern(uint8[], uint8);
 void displayPattern(uint8[], uint8, uint16);
 
 // get input
-int
+uint8 testPattern(uint8[], uint8);
+
+// does something to indicate success
+void success();
+
+// does something to indicate failure
+void failure();
+
 /*
  * 
  */
 int main (void) {
     uint8 pattern [MAX_SIZE] = {0};
-    uint16 tempo = 30; //tompo in BPM
+    uint16 tempo = 30; //tempo in BPM
 
     configClock();
     configSwitches();        //configure switches
@@ -84,10 +96,10 @@ int main (void) {
 
     while(tempo < MAX_TEMPO)
     {
-        for(uint8 i = 1; i <= MAX_SIZE; i++){
-            generatePattern(pattern);
-            displayPattern(pattern, tempo);
-            if(testPattern(pattern,i))
+        for(uint8 size = 1; size <= MAX_SIZE; size++){
+            generatePattern(pattern, size);
+            displayPattern(pattern, size, tempo);
+            if(testPattern(pattern, size))
                 success();
             else
                 failure();
