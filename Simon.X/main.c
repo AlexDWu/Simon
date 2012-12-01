@@ -61,6 +61,22 @@ inline void configSwitches()  {
 #define YELLOW 2
 #define GREEN 3
 
+uint16 delayCount = 0; // for a more accurate delay time
+uint16 randCount = 0; // for better random number generation, used as seed
+//Timer 3 is used for more acurate delay time a better random number generation
+inline void configTimer3(){
+    T2CONbits.T32 = 0;
+    T3CON = T3_OFF | T3_IDLE_CON | T3_GATE_OFF
+        | T3_SOURCE_INT
+        | T3_PS_1_1;
+    PR3 = usToU16Ticks(200, getTimerPrescale(T3CONbits)) - 1;
+    TMR3 = 0;   // clear timer2 value
+    _T3IF = 0;  // clear interrupt flag
+    _T3IP = 1;  // low priority so it doesn't affect sound
+    _T3IE = 1;  // enable interupt
+    T3CONbits.TON = 1; // Turn on the timer
+}
+
 #define SOUNDOUT _LATB6
 inline void configSound(){
     CONFIG_RB6_AS_DIG_OUTPUT();
@@ -97,6 +113,9 @@ void success();
 // does something to indicate failure
 void failure();
 
+// delays for given milliseconds
+void delayMS(uint16 delayTime);
+
 /*
  *
  */
@@ -106,16 +125,14 @@ int main(void){
     configSwitches();
     configLEDs();
     configSound();
+    configTimer3();
 
     while (1){
         // press any button to start
         while(SWB != PRESSED && SWR != PRESSED && SWY!= PRESSED && SWG != PRESSED);
-        DELAY_MS(15); // debounce
+        delayMS(15); // debounce
         game();
     }
-
-    
-
 }
 
 void game (void) {
@@ -171,8 +188,10 @@ void test()
 void generatePattern(uint8 pattern[], uint8 size)
 {
     int i;
+    srand(randCount);
     for(i = 0; i < size ;i++)
     {
+
         pattern[i]=(rand()%4);
     }
 }
@@ -186,33 +205,33 @@ void displayPattern(uint8 pattern[], uint8 size, uint16 tempo){
             case BLUE:
                 LEDB = 1;
                 soundOn(BLUE_SOUND);
-                DELAY_MS(delaytime);
+                delayMS(delaytime);
                 LEDB = 0;
                 soundOff();
                 break;
             case YELLOW:
                 LEDY = 1;
                 soundOn(YELLOW_SOUND);
-                DELAY_MS(delaytime);
+                delayMS(delaytime);
                 LEDY = 0;
                 soundOff();
                 break;
             case RED:
                 LEDR = 1;
                 soundOn(RED_SOUND);
-                DELAY_MS(delaytime);
+                delayMS(delaytime);
                 LEDR = 0;
                 soundOff();
                 break;
             case GREEN:
                 LEDG = 1;
                 soundOn(GREEN_SOUND);
-                DELAY_MS(delaytime);
+                delayMS(delaytime);
                 LEDG = 0;
                 soundOff();
                 break;
         }
-        DELAY_MS(delaytime);
+        delayMS(delaytime);
     }
 }
 
@@ -222,12 +241,12 @@ uint8 testPattern(uint8 pattern[], uint8 size){
     for (i = 0; i < size; i++){
         // wait for input
         while(SWB != PRESSED && SWR != PRESSED && SWY!= PRESSED && SWG != PRESSED); 
-        DELAY_MS(15); // debounce
+        delayMS(15); // debounce
         if(SWB == PRESSED){
             LEDB = 1; 
             soundOn(BLUE_SOUND);
             while(SWB == PRESSED); // wait for release                
-            DELAY_MS(15);//debounce
+            delayMS(15);//debounce
             LEDB = 0;
             soundOff();
             if(pattern[i] == BLUE)
@@ -239,7 +258,7 @@ uint8 testPattern(uint8 pattern[], uint8 size){
             LEDR = 1;
             soundOn(RED_SOUND);    
             while(SWR == PRESSED); // wait for release
-            DELAY_MS(15);//debounce
+            delayMS(15);//debounce
             LEDR = 0;
             soundOff();
             if(pattern[i] == RED)
@@ -251,7 +270,7 @@ uint8 testPattern(uint8 pattern[], uint8 size){
             LEDY = 1;
             soundOn(YELLOW_SOUND);
             while(SWY == PRESSED); // wait for release
-            DELAY_MS(15);//debounce
+            delayMS(15);//debounce
             LEDY = 0;
             soundOff();
             if(pattern[i] == YELLOW)
@@ -263,7 +282,7 @@ uint8 testPattern(uint8 pattern[], uint8 size){
             LEDG = 1;
             soundOn(GREEN_SOUND);
             while(SWG == PRESSED); // wait for release
-            DELAY_MS(15);//debounce
+            delayMS(15);//debounce
             LEDG = 0;
             soundOff();
             if(pattern[i] == GREEN)
@@ -286,15 +305,15 @@ void failure(){
         LEDY=1;
         LEDR=1;
         LEDB=1;
-        DELAY_MS(100);
+        delayMS(100);
         LEDG=0;
         LEDY=0;
         LEDR=0;
         LEDB=0;
-        DELAY_MS(100);
+        delayMS(100);
     }
     soundOff();
-    DELAY_MS(500);
+    delayMS(500);
 }
 
 // does something to indicate failure
@@ -305,36 +324,36 @@ void success(){
     {
     //forward
         LEDG = 1;
-        DELAY_MS(100);
+        delayMS(100);
 
         LEDG = 0;
         LEDY = 1;
-        DELAY_MS(100);
+        delayMS(100);
 
         LEDY = 0;
         LEDR = 1;
-        DELAY_MS(100);
+        delayMS(100);
 
         LEDR = 0;
         LEDB = 1;
-        DELAY_MS(100);
+        delayMS(100);
 
         LEDB = 0;
     //reverse
         LEDB = 1;
-        DELAY_MS(100);
+        delayMS(100);
 
         LEDB = 0;
         LEDR = 1;
-        DELAY_MS(100);
+        delayMS(100);
 
         LEDR = 0;
         LEDY = 1;
-        DELAY_MS(100);
+        delayMS(100);
 
         LEDY = 0;
         LEDG = 1;
-        DELAY_MS(100);
+        delayMS(100);
         LEDG=0;
     }
 }
@@ -351,7 +370,6 @@ void soundOn(uint16 freq){
     _T2IP = 7;  // high priority for quality sound
     _T2IE = 1;  // enable interupt
     T2CONbits.TON = 1; // Turn on the timer
-
 }
 
 void _ISRFAST _T2Interrupt(){
@@ -363,4 +381,16 @@ void soundOff(){
     _T2IE = 0; // disable interupt
     T2CONbits.TON = 0; // Turn off timer
     SOUNDOUT = 0; // make sure port is low
+}
+
+void delayMS(uint16 time){
+    uint16 delayCompare = time * 5;
+    delayCount = 0;
+    while(delayCount < delayCompare);
+}
+
+void _ISRFAST _T3Interrupt(){
+    delayCount++;
+    randCount++;
+    _T3IF = 0; // reset interupt flag
 }
