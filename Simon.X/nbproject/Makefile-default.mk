@@ -24,13 +24,13 @@ CP=cp
 CND_CONF=default
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
 IMAGE_TYPE=debug
-OUTPUT_SUFFIX=cof
-DEBUGGABLE_SUFFIX=cof
+OUTPUT_SUFFIX=elf
+DEBUGGABLE_SUFFIX=elf
 FINAL_IMAGE=dist/${CND_CONF}/${IMAGE_TYPE}/Simon.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 else
 IMAGE_TYPE=production
 OUTPUT_SUFFIX=hex
-DEBUGGABLE_SUFFIX=cof
+DEBUGGABLE_SUFFIX=elf
 FINAL_IMAGE=dist/${CND_CONF}/${IMAGE_TYPE}/Simon.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 endif
 
@@ -41,11 +41,11 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/_ext/1105076141/pic24_clockfreq.o ${OBJECTDIR}/_ext/1105076141/pic24_configbits.o ${OBJECTDIR}/_ext/1105076141/pic24_serial.o ${OBJECTDIR}/_ext/1105076141/pic24_uart.o ${OBJECTDIR}/_ext/1105076141/pic24_util.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/_ext/1105076141/pic24_clockfreq.o.d ${OBJECTDIR}/_ext/1105076141/pic24_configbits.o.d ${OBJECTDIR}/_ext/1105076141/pic24_serial.o.d ${OBJECTDIR}/_ext/1105076141/pic24_uart.o.d ${OBJECTDIR}/_ext/1105076141/pic24_util.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/_ext/1105076141/pic24_clockfreq.o ${OBJECTDIR}/_ext/1105076141/pic24_configbits.o ${OBJECTDIR}/_ext/1105076141/pic24_util.o ${OBJECTDIR}/_ext/1105076141/pic24_uart.o ${OBJECTDIR}/_ext/1105076141/pic24_serial.o ${OBJECTDIR}/_ext/1105076141/pic24_timer.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/_ext/1105076141/pic24_clockfreq.o.d ${OBJECTDIR}/_ext/1105076141/pic24_configbits.o.d ${OBJECTDIR}/_ext/1105076141/pic24_util.o.d ${OBJECTDIR}/_ext/1105076141/pic24_uart.o.d ${OBJECTDIR}/_ext/1105076141/pic24_serial.o.d ${OBJECTDIR}/_ext/1105076141/pic24_timer.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/_ext/1105076141/pic24_clockfreq.o ${OBJECTDIR}/_ext/1105076141/pic24_configbits.o ${OBJECTDIR}/_ext/1105076141/pic24_serial.o ${OBJECTDIR}/_ext/1105076141/pic24_uart.o ${OBJECTDIR}/_ext/1105076141/pic24_util.o
+OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/_ext/1105076141/pic24_clockfreq.o ${OBJECTDIR}/_ext/1105076141/pic24_configbits.o ${OBJECTDIR}/_ext/1105076141/pic24_util.o ${OBJECTDIR}/_ext/1105076141/pic24_uart.o ${OBJECTDIR}/_ext/1105076141/pic24_serial.o ${OBJECTDIR}/_ext/1105076141/pic24_timer.o
 
 
 CFLAGS=
@@ -87,11 +87,11 @@ ${OBJECTDIR}/_ext/1105076141/pic24_configbits.o: ../../CD\ stuff/code/common/pic
 	${MP_CC} $(MP_EXTRA_CC_PRE)  "../../CD stuff/code/common/pic24_configbits.c"  -o ${OBJECTDIR}/_ext/1105076141/pic24_configbits.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1105076141/pic24_configbits.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1105076141/pic24_configbits.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
-${OBJECTDIR}/_ext/1105076141/pic24_serial.o: ../../CD\ stuff/code/common/pic24_serial.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/1105076141/pic24_util.o: ../../CD\ stuff/code/common/pic24_util.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1105076141 
-	@${RM} ${OBJECTDIR}/_ext/1105076141/pic24_serial.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  "../../CD stuff/code/common/pic24_serial.c"  -o ${OBJECTDIR}/_ext/1105076141/pic24_serial.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1105076141/pic24_serial.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1105076141/pic24_serial.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	@${RM} ${OBJECTDIR}/_ext/1105076141/pic24_util.o.d 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  "../../CD stuff/code/common/pic24_util.c"  -o ${OBJECTDIR}/_ext/1105076141/pic24_util.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1105076141/pic24_util.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1105076141/pic24_util.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1105076141/pic24_uart.o: ../../CD\ stuff/code/common/pic24_uart.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1105076141 
@@ -99,11 +99,17 @@ ${OBJECTDIR}/_ext/1105076141/pic24_uart.o: ../../CD\ stuff/code/common/pic24_uar
 	${MP_CC} $(MP_EXTRA_CC_PRE)  "../../CD stuff/code/common/pic24_uart.c"  -o ${OBJECTDIR}/_ext/1105076141/pic24_uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1105076141/pic24_uart.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1105076141/pic24_uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
-${OBJECTDIR}/_ext/1105076141/pic24_util.o: ../../CD\ stuff/code/common/pic24_util.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/1105076141/pic24_serial.o: ../../CD\ stuff/code/common/pic24_serial.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1105076141 
-	@${RM} ${OBJECTDIR}/_ext/1105076141/pic24_util.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  "../../CD stuff/code/common/pic24_util.c"  -o ${OBJECTDIR}/_ext/1105076141/pic24_util.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1105076141/pic24_util.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1105076141/pic24_util.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	@${RM} ${OBJECTDIR}/_ext/1105076141/pic24_serial.o.d 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  "../../CD stuff/code/common/pic24_serial.c"  -o ${OBJECTDIR}/_ext/1105076141/pic24_serial.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1105076141/pic24_serial.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1105076141/pic24_serial.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/_ext/1105076141/pic24_timer.o: ../../CD\ stuff/code/common/pic24_timer.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/_ext/1105076141 
+	@${RM} ${OBJECTDIR}/_ext/1105076141/pic24_timer.o.d 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  "../../CD stuff/code/common/pic24_timer.c"  -o ${OBJECTDIR}/_ext/1105076141/pic24_timer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1105076141/pic24_timer.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1105076141/pic24_timer.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 else
 ${OBJECTDIR}/main.o: main.c  nbproject/Makefile-${CND_CONF}.mk
@@ -124,11 +130,11 @@ ${OBJECTDIR}/_ext/1105076141/pic24_configbits.o: ../../CD\ stuff/code/common/pic
 	${MP_CC} $(MP_EXTRA_CC_PRE)  "../../CD stuff/code/common/pic24_configbits.c"  -o ${OBJECTDIR}/_ext/1105076141/pic24_configbits.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1105076141/pic24_configbits.o.d"        -g -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1105076141/pic24_configbits.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
-${OBJECTDIR}/_ext/1105076141/pic24_serial.o: ../../CD\ stuff/code/common/pic24_serial.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/1105076141/pic24_util.o: ../../CD\ stuff/code/common/pic24_util.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1105076141 
-	@${RM} ${OBJECTDIR}/_ext/1105076141/pic24_serial.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  "../../CD stuff/code/common/pic24_serial.c"  -o ${OBJECTDIR}/_ext/1105076141/pic24_serial.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1105076141/pic24_serial.o.d"        -g -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1105076141/pic24_serial.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	@${RM} ${OBJECTDIR}/_ext/1105076141/pic24_util.o.d 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  "../../CD stuff/code/common/pic24_util.c"  -o ${OBJECTDIR}/_ext/1105076141/pic24_util.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1105076141/pic24_util.o.d"        -g -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1105076141/pic24_util.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1105076141/pic24_uart.o: ../../CD\ stuff/code/common/pic24_uart.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1105076141 
@@ -136,11 +142,17 @@ ${OBJECTDIR}/_ext/1105076141/pic24_uart.o: ../../CD\ stuff/code/common/pic24_uar
 	${MP_CC} $(MP_EXTRA_CC_PRE)  "../../CD stuff/code/common/pic24_uart.c"  -o ${OBJECTDIR}/_ext/1105076141/pic24_uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1105076141/pic24_uart.o.d"        -g -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1105076141/pic24_uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
-${OBJECTDIR}/_ext/1105076141/pic24_util.o: ../../CD\ stuff/code/common/pic24_util.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/1105076141/pic24_serial.o: ../../CD\ stuff/code/common/pic24_serial.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1105076141 
-	@${RM} ${OBJECTDIR}/_ext/1105076141/pic24_util.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  "../../CD stuff/code/common/pic24_util.c"  -o ${OBJECTDIR}/_ext/1105076141/pic24_util.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1105076141/pic24_util.o.d"        -g -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1105076141/pic24_util.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	@${RM} ${OBJECTDIR}/_ext/1105076141/pic24_serial.o.d 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  "../../CD stuff/code/common/pic24_serial.c"  -o ${OBJECTDIR}/_ext/1105076141/pic24_serial.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1105076141/pic24_serial.o.d"        -g -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1105076141/pic24_serial.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/_ext/1105076141/pic24_timer.o: ../../CD\ stuff/code/common/pic24_timer.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/_ext/1105076141 
+	@${RM} ${OBJECTDIR}/_ext/1105076141/pic24_timer.o.d 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  "../../CD stuff/code/common/pic24_timer.c"  -o ${OBJECTDIR}/_ext/1105076141/pic24_timer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1105076141/pic24_timer.o.d"        -g -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1105076141/pic24_timer.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 
